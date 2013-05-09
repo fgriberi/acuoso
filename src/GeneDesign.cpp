@@ -46,6 +46,7 @@ namespace acuoso
 class GeneDesign : public ICodonUsageModifier
 {
 private:    
+    
     virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
     virtual void setOrganism(Organism organism);
     virtual ~GeneDesign() {}

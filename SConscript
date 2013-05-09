@@ -2,7 +2,7 @@ Import ('env')
 
 name = 'acuoso'
 inc = env.Dir('.')
-ext_inc = env.Dir('acuoso')
+ext_inc = []
 src = env.Glob('src/*.cpp') 
 deps = ['mili', 'biopp', 'fideo', 'biopp-filer', 'stl-debug']
 

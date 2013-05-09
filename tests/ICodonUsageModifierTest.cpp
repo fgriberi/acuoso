@@ -25,6 +25,8 @@
 #include <acuoso/acuoso.h>
 #include <gtest/gtest.h>
 
+using namespace acuoso;
+
 TEST(GeneDesignBackendTestSuite, BasicTest)
 {
     const std::string sequence = "UUUAAAACAGCCUGUGGGUUGUUCCCACCCACAGGCGCCACCGGGCGUUAGCACACUGGU"
@@ -46,7 +48,7 @@ TEST(GeneDesignBackendTestSuite, BasicTest)
 	  auxSeq.translate(aminoSeq); 
     biopp::NucSequence seqDest;
 
-    acuoso::ICodonUsageModifier* humanizer = mili::FactoryRegistry<acuoso::ICodonUsageModifier, std::string>::new_class("GeneDesign");
+    ICodonUsageModifier* humanizer = mili::FactoryRegistry<ICodonUsageModifier, std::string>::new_class("GeneDesign");
     ASSERT_TRUE(humanizer != NULL);
 
     humanizer->setOrganism(acuoso::ICodonUsageModifier::Organism(3));
