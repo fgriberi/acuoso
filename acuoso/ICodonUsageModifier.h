@@ -35,10 +35,13 @@
 #define I_CODON_USAGE_MODIFIER_H
 
 #include <biopp/biopp.h>
+#include <mili/mili.h>
 
 namespace acuoso
 {
- 
+
+typedef std::list<std::string> Backend;
+
 ///Interface for sequence's humanized services.
 struct ICodonUsageModifier
 {
@@ -74,6 +77,22 @@ struct ICodonUsageModifier
      *
      */
     virtual ~ICodonUsageModifier() {}
+
+    /** @brief Get availables backend to optimizer
+     *
+     * Method that provide the available backends for optimizer service.
+     * @param slist: to fill with different backends
+     * @return void
+     */
+    static void getAvailableBackends(Backend& backends)    
+    {
+        mili::Factory<std::string, ICodonUsageModifier>::KeyIterator it(mili::FactoryRegistry<ICodonUsageModifier, std::string>::getConstructibleObjectsKeys());
+        while (!it.end())
+        {
+            backends.push_back(*it);
+            it++;
+        }
+    }
 };
 }
 #endif /* I_CODON_USAGE_MODIFIER_H */
