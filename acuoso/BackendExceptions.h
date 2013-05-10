@@ -60,6 +60,12 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(EmptySequence, AcuosoExceptionHierarchy, "Empty h
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(OrganismNotSupported, AcuosoExceptionHierarchy, "Organism not supported.");
 
+DEFINE_SPECIFIC_EXCEPTION_TEXT(RNABackendException, AcuosoExceptionHierarchy, "RNABackend");
+
+DEFINE_SPECIFIC_EXCEPTION_TEXT(SystemCallException, AcuosoExceptionHierarchy, "System call failed");
+
+DEFINE_SPECIFIC_EXCEPTION_TEXT(NonTerminationException, AcuosoExceptionHierarchy, "Non termination for some reason");
+
 }
 #endif /* BACKEND_EXCEPTIONS_H */
 

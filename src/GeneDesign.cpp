@@ -32,11 +32,10 @@
  *
  */
 
-
 #include <unistd.h>
-#include <mili/mili.h>
-#include <fideo/fideo.h>
+#include <biopp/biopp.h> 
 #include <biopp-filer/bioppFiler.h>
+#include "acuoso/HelperAcuoso.h" 
 #include "acuoso/BackendExceptions.h"
 #include "acuoso/ICodonUsageModifier.h"
 
@@ -50,6 +49,8 @@ private:
     virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
     virtual void setOrganism(Organism organism);
     virtual ~GeneDesign() {}
+    void generateCommand(const std::stringstream& fileName, Command& cmd) const;    
+    void checkErrorFile(const std::string& nameFile) const;
     Organism org;
 };
 
@@ -58,8 +59,8 @@ static const std::string SEQUENCE = "sequence";
 static const std::string FILE_NAME_INPUT = ".FASTA";
 static const std::string FILE_NAME_OUTPUT = "_gdRT_";
 
-static const std::string RUN_PATH = "runGD";
-static const std::string RESULT_PATH = "resultGD";
+static const std::string RUN_PATH = "runGD /home/gringusi/Escritorio/geneDesign/GeneDesign/bin";
+static const std::string RESULT_PATH = "resultGD /home/gringusi/Escritorio/geneDesign/GeneDesign/bin/sequence_gdRT";
 
 REGISTER_FACTORIZABLE_CLASS(ICodonUsageModifier, GeneDesign, std::string, "GeneDesign");
 
@@ -68,25 +69,11 @@ void GeneDesign::setOrganism(Organism organism)
     org = organism;
 }
 
-void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const
-{
-    dest.clear();
-
-    //move to the directory where is the humanize
-    std::string executablePath;
-    fideo::FideoConfig::getInstance()->getPath(RUN_PATH.c_str(), executablePath);
-    if (chdir(executablePath.c_str()) != 0)
-    {
-        throw InvalidPathChdir();
-    }
-
-    std::stringstream file_name;
-    file_name << SEQUENCE << FILE_NAME_INPUT;
-    bioppFiler::FastaSaver<biopp::AminoSequence> fs(file_name.str());
-    fs.saveNextSequence("temp", src);
+void GeneDesign::generateCommand(const std::stringstream& fileName, Command& cmd) const
+{    
     std::stringstream ss;
     ss << "perl Reverse_Translate.pl -i ";
-    ss << file_name.str();
+    ss << fileName.str();
     ss << " -o ";
 
     switch (org)
@@ -112,37 +99,52 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
         default:
             throw OrganismNotSupported();
     }
+    cmd = ss.str();
+}
 
-    const fideo::Command cmd = ss.str(); //Command is: perl Reverse_Translate.pl -i FILE_NAME -o organism
-    fideo::helper::runCommand(cmd);
-
-    //move to the directory where is the result of humanize
-    fideo::FideoConfig::getInstance()->getPath(RESULT_PATH.c_str(), executablePath);
-    if (chdir(executablePath.c_str()) != 0)
-    {
-        throw InvalidPathChdir();
-    }
-
+void GeneDesign::checkErrorFile(const std::string& nameFile) const
+{
     std::ifstream fileError;
-    fileError.open(FILE_ERROR.c_str());
+    fileError.open(nameFile.c_str());
     if (fileError)
     {
         throw ErrorHumanizer();
     }
     fileError.close();
+}
 
-    std::stringstream file_output;
-    file_output << SEQUENCE << FILE_NAME_OUTPUT << org << FILE_NAME_INPUT;
+void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const
+{
+    dest.clear();
 
-    bioppFiler::FastaParser<biopp::NucSequence> fp(file_output.str());
+    //move to the directory where is the humanize
+    helper::changeDirectory(RUN_PATH.c_str());    
+
+    std::stringstream fileName;
+    fileName << SEQUENCE << FILE_NAME_INPUT;
+    bioppFiler::FastaSaver<biopp::AminoSequence> fs(fileName.str());
+    fs.saveNextSequence("temp", src);
+
+    Command command; //Command is: perl Reverse_Translate.pl -i FILE_NAME -o organism
+    generateCommand(fileName, command);
+    helper::runCommand(command);
+
+    //move to the directory where is the result of humanize
+    helper::changeDirectory(RESULT_PATH.c_str());
+    checkErrorFile(FILE_ERROR.c_str());
+
+    std::stringstream fileOutput;
+    fileOutput << SEQUENCE << FILE_NAME_OUTPUT << org << FILE_NAME_INPUT;
+
+    bioppFiler::FastaParser<biopp::NucSequence> fp(fileOutput.str());
     std::string name;
     if (!fp.getNextSequence(name, dest))
     {
-        throw EmptySequence();
+        throw EmptySequence();  
     }
     biopp::AminoSequence acTemp;
     dest.translate(acTemp);
     assert(src == acTemp);
-    fideo::helper::removeFile(file_output.str());
+    helper::removeFile(fileOutput.str());
 }
-}
+} // namespace acuoso
