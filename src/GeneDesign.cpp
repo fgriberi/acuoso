@@ -1,5 +1,5 @@
 /**
- * @file     GeneDesign.cpp
+ * @file     GeneDesign.cpp   postaaaaaaaaaaaa
  * @brief    GeneDesign is the implementation of ICodonUsageModifier interface.
  *           It's a specific backend to humanizer. It's a external software.
  *
@@ -35,9 +35,15 @@
 #include <unistd.h>
 #include <biopp/biopp.h> 
 #include <biopp-filer/bioppFiler.h>
-#include "acuoso/HelperAcuoso.h" 
+#include <etilico/etilico.h> 
 #include "acuoso/BackendExceptions.h"
 #include "acuoso/ICodonUsageModifier.h"
+
+/// Temporal functions
+int linkFictitious()
+{
+    return 1;
+}
 
 namespace acuoso
 {
@@ -49,7 +55,7 @@ private:
     virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
     virtual void setOrganism(Organism organism);
     virtual ~GeneDesign() {}
-    void generateCommand(const std::stringstream& fileName, Command& cmd) const;    
+    void generateCommand(const std::stringstream& fileName, etilico::Command& cmd) const;    
     void checkErrorFile(const std::string& nameFile) const;
     Organism org;
 };
@@ -59,8 +65,8 @@ static const std::string SEQUENCE = "sequence";
 static const std::string FILE_NAME_INPUT = ".FASTA";
 static const std::string FILE_NAME_OUTPUT = "_gdRT_";
 
-static const std::string RUN_PATH = "runGD /home/gringusi/Escritorio/geneDesign/GeneDesign/bin";
-static const std::string RESULT_PATH = "resultGD /home/gringusi/Escritorio/geneDesign/GeneDesign/bin/sequence_gdRT";
+static const std::string RUN_PATH = "runGD";
+static const std::string RESULT_PATH = "resultGD";
 
 REGISTER_FACTORIZABLE_CLASS(ICodonUsageModifier, GeneDesign, std::string, "GeneDesign");
 
@@ -69,7 +75,7 @@ void GeneDesign::setOrganism(Organism organism)
     org = organism;
 }
 
-void GeneDesign::generateCommand(const std::stringstream& fileName, Command& cmd) const
+void GeneDesign::generateCommand(const std::stringstream& fileName, etilico::Command& cmd) const
 {    
     std::stringstream ss;
     ss << "perl Reverse_Translate.pl -i ";
@@ -117,20 +123,29 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
 {
     dest.clear();
 
-    //move to the directory where is the humanize
-    helper::changeDirectory(RUN_PATH.c_str());    
+    //move to the directory where is the humanize    
+    std::string executablePath;
+    etilico::Config::getInstance()->getPath(RUN_PATH, executablePath);   
+    if (chdir(executablePath.c_str()) != 0)
+    {
+        throw ChdirException();
+    }
 
     std::stringstream fileName;
     fileName << SEQUENCE << FILE_NAME_INPUT;
     bioppFiler::FastaSaver<biopp::AminoSequence> fs(fileName.str());
     fs.saveNextSequence("temp", src);
 
-    Command command; //Command is: perl Reverse_Translate.pl -i FILE_NAME -o organism
+    etilico::Command command; //Command is: perl Reverse_Translate.pl -i FILE_NAME -o organism
     generateCommand(fileName, command);
-    helper::runCommand(command);
+    etilico::runCommand(command);
 
     //move to the directory where is the result of humanize
-    helper::changeDirectory(RESULT_PATH.c_str());
+    etilico::Config::getInstance()->getPath(RESULT_PATH, executablePath);   
+    if (chdir(executablePath.c_str()) != 0)
+    {
+        throw ChdirException();
+    }
     checkErrorFile(FILE_ERROR.c_str());
 
     std::stringstream fileOutput;
@@ -145,6 +160,7 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
     biopp::AminoSequence acTemp;
     dest.translate(acTemp);
     assert(src == acTemp);
-    helper::removeFile(fileOutput.str());
+    mili::assert_throw<UnlinkException>(unlink(fileOutput.str().c_str()));   
+    
 }
 } // namespace acuoso

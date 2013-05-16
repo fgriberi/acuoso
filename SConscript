@@ -4,7 +4,6 @@ name = 'acuoso'
 inc = env.Dir('.')
 ext_inc = []
 src = env.Glob('src/*.cpp') 
-deps = ['mili', 'biopp', 'biopp-filer', 'stl-debug']
+deps = ['etilico', 'mili', 'biopp', 'biopp-filer']
 
 env.CreateSharedLibrary(name, inc, ext_inc, src, deps)
-

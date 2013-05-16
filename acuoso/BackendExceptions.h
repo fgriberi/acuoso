@@ -66,6 +66,9 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(SystemCallException, AcuosoExceptionHierarchy, "S
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(NonTerminationException, AcuosoExceptionHierarchy, "Non termination for some reason");
 
+DEFINE_SPECIFIC_EXCEPTION_TEXT(ChdirException, AcuosoExceptionHierarchy, "Invalid path of executable");
+
+DEFINE_SPECIFIC_EXCEPTION_TEXT(UnlinkException, AcuosoExceptionHierarchy, "Error unlink file");
+
 }
 #endif /* BACKEND_EXCEPTIONS_H */
-
