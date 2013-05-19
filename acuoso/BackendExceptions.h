@@ -70,5 +70,8 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(ChdirException, AcuosoExceptionHierarchy, "Invali
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(UnlinkException, AcuosoExceptionHierarchy, "Error unlink file");
 
+DEFINE_SPECIFIC_EXCEPTION_TEXT(RmdirkException, AcuosoExceptionHierarchy, "Error in rmdir");
+
+DEFINE_SPECIFIC_EXCEPTION_TEXT(IndexOutOfRange, AcuosoExceptionHierarchy, "Index out of range");
 }
 #endif /* BACKEND_EXCEPTIONS_H */
