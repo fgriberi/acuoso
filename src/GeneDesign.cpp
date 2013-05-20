@@ -198,9 +198,9 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
     biopp::AminoSequence acTemp;
     dest.translate(acTemp);
     assert(src == acTemp);
-    mili::assert_throw<UnlinkException>(unlink(fileName.c_str()));
-    mili::assert_throw<UnlinkException>(unlink(fileOutput.c_str()));   
-    mili::assert_throw<RmdirkException>(rmdir(directoryResult.c_str()));
+    mili::assert_throw<UnlinkException>(unlink(fileName.c_str()) == 0);
+    mili::assert_throw<UnlinkException>(unlink(fileOutput.c_str()) == 0);   
+    mili::assert_throw<RmdirkException>(rmdir(directoryResult.c_str()) == 0);
 }
 
 } // namespace acuoso
