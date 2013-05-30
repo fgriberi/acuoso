@@ -5,9 +5,9 @@
  * @author   Franco Riberi
  * @email    fgriberi AT gmail.com
  *
- * Contents: Header file for acuoso providing system exceptions definitions.  
+ * Contents: Header file for acuoso providing system exceptions definitions.
  *
- * System:   acuoso: Abstract Codon Usage Optimization Software for Organisms 
+ * System:   acuoso: Abstract Codon Usage Optimization Software for Organisms
  * Language: C++
  *
  * @date     April 2013
@@ -51,27 +51,18 @@ public:
 };
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidLengthSequence, AcuosoExceptionHierarchy, "RNA messenger length is not multiple of 3.");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidPathChdir, AcuosoExceptionHierarchy, "Error in chdir path.");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(ErrorHumanizer, AcuosoExceptionHierarchy, "Error in the humanization.");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(EmptySequence, AcuosoExceptionHierarchy, "Empty humanized sequence.");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(OrganismNotSupported, AcuosoExceptionHierarchy, "Organism not supported.");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(RNABackendException, AcuosoExceptionHierarchy, "RNABackend");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(SystemCallException, AcuosoExceptionHierarchy, "System call failed");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(NonTerminationException, AcuosoExceptionHierarchy, "Non termination for some reason");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(ChdirException, AcuosoExceptionHierarchy, "Invalid path of executable");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(UnlinkException, AcuosoExceptionHierarchy, "Error unlink file");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(RmdirkException, AcuosoExceptionHierarchy, "Error in rmdir");
-
 DEFINE_SPECIFIC_EXCEPTION_TEXT(IndexOutOfRange, AcuosoExceptionHierarchy, "Index out of range");
+DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidDerived, AcuosoExceptionHierarchy, "Invalid derived class");
+
 }
 #endif /* BACKEND_EXCEPTIONS_H */

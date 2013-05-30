@@ -7,7 +7,7 @@
  *
  * Contents:  Source file.
  *
- * System:    acuoso: Abstract Codon Usage Optimization Software for Organisms 
+ * System:    acuoso: Abstract Codon Usage Optimization Software for Organisms
  * Language:  C++
  *
  * @date May 2013
@@ -33,6 +33,8 @@
 
 #include <string>
 #include <fstream>
+#include <iostream>
+#include <memory>
 #include <biopp/biopp.h>
 #include <acuoso/acuoso.h>
 #include <gtest/gtest.h>
@@ -40,11 +42,11 @@
 using namespace acuoso;
 
 /// Temporal functions
-int linkFictitious();    
+int linkFictitious();
 
 TEST(GeneDesignBackendTestSuite, BasicTest)
 {
-    linkFictitious();    
+    linkFictitious();
     const std::string sequence = "UUUAAAACAGCCUGUGGGUUGUUCCCACCCACAGGCGCCACCGGGCGUUAGCACACUGGU"
                                  "AUCACGGUACCCUUGUGCGCCUGUUUUAUAACCCCACCCCGAGUAAACCUUAGAAGCAAU"
                                  "GCACCUCUGGUCAAUAGUAGGUGUGACACACCAGUCACAUCGUGACCAAGCACUUCUGUC"
@@ -61,10 +63,10 @@ TEST(GeneDesignBackendTestSuite, BasicTest)
 
     const biopp::NucSequence auxSeq(sequence);
     biopp::AminoSequence aminoSeq;
-    auxSeq.translate(aminoSeq); 
+    auxSeq.translate(aminoSeq);
     biopp::NucSequence seqDest;
 
-    ICodonUsageModifier* humanizer = mili::FactoryRegistry<ICodonUsageModifier, std::string>::new_class("GeneDesign");
+    ICodonUsageModifier* const humanizer = CodonUsageModifier::new_class("GeneDesign");
     ASSERT_TRUE(humanizer != NULL);
 
     humanizer->setOrganism(acuoso::ICodonUsageModifier::Organism(3));
@@ -84,7 +86,7 @@ TEST(GeneDesignBackendTestSuite, BasicTest)
                                        "CUGUUCCUGUACUGGCUGCUGAUGGUGACCAUCGAGCGCCUGCUGCCCUACAGCUAC"
                                        "UGGAUCGGCCACCCCGUGAGCAACCGCGCCAUCGUGUACCUGUUCACCGGCUUCAUC"
                                        "CCCCUGAACUACAAGGAGGUGAAGACCCUGCACCUGAUCCUGCUGUUCAACACCACC"
-                                       "AAGUGGGAGCUGAAGUGCCAGCACCGCAAGCUGGAGCUG"; 
+                                       "AAGUGGGAGCUGAAGUGCCAGCACCGCAAGCUGGAGCUG";
 
     ASSERT_EQ(seqDest.getString(), expectedResult);
 }

@@ -1,6 +1,6 @@
 /**
  * @file     GeneDesign.cpp
- * @brief    GeneDesign is the implementation of ICodonUsageModifier interface.
+ * @brief    GeneDesign is an implementation of ICodonUsageModifier interface.
  *           It's a specific backend to humanizer. It's a external software.
  *
  * @author   Franco Riberi
@@ -33,25 +33,41 @@
  */
 
 #include <unistd.h>
-#include <biopp/biopp.h> 
+#include <biopp/biopp.h>
 #include <biopp-filer/bioppFiler.h>
-#include <etilico/etilico.h> 
-#include "acuoso/BackendExceptions.h"
+#include <etilico/etilico.h>
 #include "acuoso/ICodonUsageModifier.h"
 
-/// Temporal functions
+/** @brief Temporal functions
+*
+*/
 int linkFictitious()
 {
     return 1;
 }
 
+/** @brief Temporal method requerid to execute remo
+*
+* @param derivedKey: name of derived class
+* @return pointer to the base class
+*/
+acuoso::ICodonUsageModifier* getDerived(const std::string& derivedKey)
+{
+    acuoso::ICodonUsageModifier* const ptr = mili::FactoryRegistry<acuoso::ICodonUsageModifier, std::string>::new_class(derivedKey);
+    mili::assert_throw<acuoso::InvalidDerived>(ptr != NULL);
+    return ptr;
+}
+
 namespace acuoso
 {
 
+/** @breif Is an implementation of ICodonUsageModifier interface.
+*
+*/
 class GeneDesign : public ICodonUsageModifier
 {
-private:    
-    
+private:
+
     virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
     virtual void setOrganism(Organism organism);
     virtual ~GeneDesign() {}
@@ -62,7 +78,7 @@ private:
     * @param cmd: to fill with command generated
     * @return void
     */
-    void generateCommand(const std::string& fileName, etilico::Command& cmd) const;    
+    void generateCommand(const std::string& fileName, etilico::Command& cmd) const;
 
     /** @brief Controls whether geneDesign generates an error file
     *
@@ -71,8 +87,8 @@ private:
     */
     void checkErrorFile(const std::string& nameFile) const;
 
-    /** @brief Gets the file name 
-    * 
+    /** @brief Gets the file name
+    *
     * @param toParse: path to parse
     * @param fileName: to fill with file name
     * @return void
@@ -90,7 +106,7 @@ static const std::string FASTA_EXTENSION = ".FASTA";
 static const std::string FILE_EXTENSION = "_gdRT_";
 static const std::string EXTENSION_DIRECTORY = "_gdRT";
 static const std::string RUN_PATH = "runGD";
-    
+
 static const size_t SIZE_EXPECTED = 3;
 static const size_t NAME_FILE = 2;
 
@@ -102,7 +118,7 @@ void GeneDesign::setOrganism(Organism organism)
 }
 
 void GeneDesign::generateCommand(const std::string& fileName, etilico::Command& cmd) const
-{    
+{
     std::stringstream ss;
     ss << "perl Reverse_Translate.pl -i ";
     ss << fileName;
@@ -193,13 +209,13 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
     std::string name;
     if (!fp.getNextSequence(name, dest))
     {
-        throw EmptySequence();  
+        throw EmptySequence();
     }
     biopp::AminoSequence acTemp;
     dest.translate(acTemp);
     assert(src == acTemp);
     mili::assert_throw<UnlinkException>(unlink(fileName.c_str()) == 0);
-    mili::assert_throw<UnlinkException>(unlink(fileOutput.c_str()) == 0);   
+    mili::assert_throw<UnlinkException>(unlink(fileOutput.c_str()) == 0);
     mili::assert_throw<RmdirkException>(rmdir(directoryResult.c_str()) == 0);
 }
 

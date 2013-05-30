@@ -36,16 +36,27 @@
 
 #include <biopp/biopp.h>
 #include <mili/mili.h>
+#include "acuoso/BackendExceptions.h"
 
 namespace acuoso
 {
 
+struct ICodonUsageModifier;
+
 typedef std::list<std::string> Backend;
 
-///Interface for sequence's humanized services.
+typedef mili::FactoryRegistry<ICodonUsageModifier, std::string> CodonUsageModifier;
+
+/** @brief Interface for sequence's humanized services.
+*
+*/
 struct ICodonUsageModifier
 {
-    ///Enum that representing all organisms supported
+    typedef mili::Factory<std::string, ICodonUsageModifier> Factory;
+
+    /** @brief Enum that representing all organisms supported
+    *
+    */
     enum Organism
     {
         minimumValue = 1,
@@ -84,9 +95,9 @@ struct ICodonUsageModifier
      * @param slist: to fill with different backends
      * @return void
      */
-    static void getAvailableBackends(Backend& backends)    
+    static void getAvailableBackends(Backend& backends)
     {
-        mili::Factory<std::string, ICodonUsageModifier>::KeyIterator it(mili::FactoryRegistry<ICodonUsageModifier, std::string>::getConstructibleObjectsKeys());
+        Factory::KeyIterator it(CodonUsageModifier::getConstructibleObjectsKeys());
         while (!it.end())
         {
             backends.push_back(*it);
