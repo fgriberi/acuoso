@@ -186,9 +186,10 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
     {
         throw ChdirException();
     }
-
+    const std::string path = "/tmp/";
+    std::string prefix = "myTmpFile-XXXXXX";
     std::string fileName;
-    etilico::createTemporaryFilename(fileName);
+    etilico::createTemporaryFile(fileName, path, prefix);
     bioppFiler::FastaSaver<biopp::AminoSequence> fs(fileName.c_str());
     fs.saveNextSequence("temp", src);
     etilico::Command command; //Command is: perl Reverse_Translate.pl -i FILE_NAME -o organism
