@@ -43,8 +43,14 @@ namespace acuoso
 
 struct ICodonUsageModifier;
 
+/** @brief Represent all backends availables
+*
+*/
 typedef std::list<std::string> Backend;
 
+/** @brief Represent a FactoryRegistry
+*
+*/
 typedef mili::FactoryRegistry<ICodonUsageModifier, std::string> CodonUsageModifier;
 
 /** @brief Interface for sequence's humanized services.
@@ -105,5 +111,6 @@ struct ICodonUsageModifier
         }
     }
 };
-}
+
+} //namespace acuoso
 #endif /* I_CODON_USAGE_MODIFIER_H */

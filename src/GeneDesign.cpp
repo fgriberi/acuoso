@@ -70,7 +70,7 @@ private:
 
     virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
     virtual void setOrganism(Organism organism);
-    virtual ~GeneDesign() {}
+    virtual ~GeneDesign();
 
     /** @brief Generates the command to call geneDesign
     *
@@ -111,6 +111,9 @@ static const size_t SIZE_EXPECTED = 3;
 static const size_t NAME_FILE = 2;
 
 REGISTER_FACTORIZABLE_CLASS(ICodonUsageModifier, GeneDesign, std::string, "GeneDesign");
+
+GeneDesign::~GeneDesign()
+{}
 
 void GeneDesign::setOrganism(Organism organism)
 {

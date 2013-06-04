@@ -63,6 +63,6 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(UnlinkException, AcuosoExceptionHierarchy, "Error
 DEFINE_SPECIFIC_EXCEPTION_TEXT(RmdirkException, AcuosoExceptionHierarchy, "Error in rmdir");
 DEFINE_SPECIFIC_EXCEPTION_TEXT(IndexOutOfRange, AcuosoExceptionHierarchy, "Index out of range");
 DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidDerived, AcuosoExceptionHierarchy, "Invalid derived class");
-
+DEFINE_SPECIFIC_EXCEPTION_TEXT(FileNotFound, AcuosoExceptionHierarchy, "The file not founds");
 }
 #endif /* BACKEND_EXCEPTIONS_H */

@@ -1,8 +1,8 @@
 Import ('env')
 
 name = 'acuoso'
-inc = env.Dir('.')
+inc = env.Dir('.'), env.Dir('../../etilico')
 src = env.Glob('*.cpp')
-deps = ['acuoso', 'mili', 'biopp', 'gtest_main', 'gtest']
+deps = ['acuoso', 'etilico', 'mili', 'biopp', 'gtest_main', 'gtest']
 
 env.CreateTest(name, inc, src, deps)
