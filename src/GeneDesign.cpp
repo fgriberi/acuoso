@@ -51,7 +51,7 @@ int linkFictitious()
 * @param derivedKey: name of derived class
 * @return pointer to the base class
 */
-acuoso::ICodonUsageModifier* getDerived(const std::string& derivedKey)
+acuoso::ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey)
 {
     acuoso::ICodonUsageModifier* const ptr = mili::FactoryRegistry<acuoso::ICodonUsageModifier, std::string>::new_class(derivedKey);
     mili::assert_throw<acuoso::InvalidDerived>(ptr != NULL);
