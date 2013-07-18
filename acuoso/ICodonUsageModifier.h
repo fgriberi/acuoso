@@ -52,7 +52,7 @@ typedef std::list<std::string> Backends;
 *
 */
 typedef mili::FactoryRegistry<ICodonUsageModifier, std::string> CodonUsageModifier;
-        
+
 /** @brief Interface for sequence's humanized services.
 *
 */

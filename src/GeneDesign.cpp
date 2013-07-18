@@ -32,11 +32,9 @@
  *
  */
 
-#include <unistd.h>
-#include <biopp/biopp.h>
-#include <biopp-filer/bioppFiler.h>
-#include <etilico/etilico.h>
-#include "acuoso/ICodonUsageModifier.h"
+#define GENE_DESIGN_H
+#include "acuoso/GeneDesign.h"
+#undef GENE_DESIGN_H
 
 /** @brief Temporal method requerid to execute remo
 *
@@ -52,46 +50,6 @@ acuoso::ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& deriv
 
 namespace acuoso
 {
-
-/** @breif Is an implementation of ICodonUsageModifier interface.
-*
-*/
-class GeneDesign : public ICodonUsageModifier
-{
-private:
-
-    virtual void changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSequence& dest) const;
-    virtual void setOrganism(Organism organism);
-    virtual ~GeneDesign();
-
-    /** @brief Generates the command to call geneDesign
-    *
-    * @param fileName: input of geneDesing
-    * @param cmd: to fill with command generated
-    * @return void
-    */
-    void generateCommand(const std::string& fileName, etilico::Command& cmd) const;
-
-    /** @brief Controls whether geneDesign generates an error file
-    *
-    * @param nameFile: input file name
-    * @return void
-    */
-    void checkErrorFile(const std::string& nameFile) const;
-
-    /** @brief Gets the file name
-    *
-    * @param toParse: path to parse
-    * @param fileName: to fill with file name
-    * @return void
-    */
-    void getFileOutput(std::stringstream& toParse, std::string& fileName) const;
-
-    /** @brief Store specific organism
-    *
-    */
-    Organism org;
-};
 
 static const std::string FILE_ERROR = "error.txt";
 static const std::string FASTA_EXTENSION = ".FASTA";
@@ -179,7 +137,7 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
         throw ChdirException();
     }
     const std::string path = "/tmp/";
-    std::string prefix = "myTmpFile-XXXXXX";
+    std::string prefix = "acuoso-XXXXXX";
     std::string fileName;
     etilico::createTemporaryFile(fileName, path, prefix);
     bioppFiler::FastaSaver<biopp::AminoSequence> fs(fileName.c_str());

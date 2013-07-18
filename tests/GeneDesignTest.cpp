@@ -1,6 +1,6 @@
 /*
- * @file      ICodonUsageModifierTest.cpp
- * @brief     ICodonUsageModifierTest is a test file to GeneDesign backend.
+ * @file      GeneDesignTest.cpp
+ * @brief     GeneDesignTest is a test file to GeneDesign backend.
  *
  * @author    Franco Riberi
  * @email     fgriberi AT gmail.com
@@ -31,13 +31,17 @@
  *
  */
 
-//#include <string>
-//#include <fstream>
-//#include <iostream>
+#define private public
+
 #include <memory>
 #include <biopp/biopp.h>
 #include <acuoso/acuoso.h>
+#include <etilico/etilico.h>
 #include <gtest/gtest.h>
+#define GENE_DESIGN_H
+#include "acuoso/GeneDesign.h"
+#undef GENE_DESIGN_H
+#include "acuoso/ICodonUsageModifier.h"
 
 using namespace acuoso;
 
@@ -90,4 +94,45 @@ TEST(GeneDesignBackendTestSuite, BasicTest)
                                        "AAGUGGGAGCUGAAGUGCCAGCACCGCAAGCUGGAGCUG";
 
     ASSERT_EQ(seqDest.getString(), expectedResult);
+}
+
+TEST(GeneDesignBackendTestSuite, InvalidBackend)
+{
+    EXPECT_THROW(ICodonUsageModifier* humanizer = getDerivedHumanizerBackend("Genedesign"), InvalidDerived);
+}
+
+TEST(GeneDesignBackendTestSuite, InvalidOrganism)
+{
+    GeneDesign geneDesign;
+    geneDesign.setOrganism(ICodonUsageModifier::Organism(8)); //invalid organism
+    const std::string fileName = "obsoletFileName.fasta";
+    etilico::Command cmd;
+    EXPECT_THROW(geneDesign.generateCommand(fileName, cmd), OrganismNotSupported);    
+}
+
+TEST(GeneDesignBackendTestSuite, invalidPath)
+{    
+    std::stringstream pathFile;
+    pathFile << "tmp/acuoso-Jrkkxc_gdRT_3.FASTA";    
+    std::string fileName;
+    GeneDesign geneDesign;
+    EXPECT_THROW(geneDesign.getFileOutput(pathFile, fileName), IndexOutOfRange);       
+}
+
+TEST(GeneDesignBackendTestSuite, CorrectCommand)
+{    
+    GeneDesign geneDesign;
+    geneDesign.setOrganism(ICodonUsageModifier::Organism(3)); 
+    const std::string fileName = "/tmp/acuoso-uvkcIs";
+    etilico::Command cmd;
+    geneDesign.generateCommand(fileName, cmd);
+    const etilico::Command expectdCmd = "perl Reverse_Translate.pl -i /tmp/acuoso-uvkcIs -o 3";    
+    EXPECT_EQ(cmd, expectdCmd);
+}
+
+static const size_t INVALID_COMMAND = 2;
+TEST(GeneDesignBackendTestSuite, IncorrectCommand)
+{    
+    etilico::Command cmd = "perl Reverse_Translate.pl -i tmp/acuoso-uvkcIs -o3";              
+    EXPECT_EQ(etilico::runCommand(cmd), INVALID_COMMAND);
 }
