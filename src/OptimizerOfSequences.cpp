@@ -38,7 +38,7 @@
 namespace acuoso
 {
 
-/** @brief Represent a file name
+/** @brief Represent a filename
  *
  */
 typedef std::string FileName;

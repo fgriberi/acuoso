@@ -1,6 +1,6 @@
 /**
  * @file    OptimizerOfSequences.h
- * @brief   OptimizerOfSequences provides the interface to optimized a fasta file.
+ * @brief   OptimizerOfSequences provides the interface to optimize or humanize a fasta file.
  *
  * @author  Franco Riberi
  * @email   fgriberi AT gmail.com
@@ -39,7 +39,7 @@
 namespace acuoso
 {
 
-/** @brief Class that provides the interface to optimized a fasta file.
+/** @brief Class that provides the interface to optimize a fasta file.
 *
 */
 class OptimizerOfSequences
@@ -77,7 +77,7 @@ private:
      */
     void generateFile();
 
-    /// Specific backend to optimizer sequence
+    /// Specific backend to optimize sequences
     ICodonUsageModifier* specificOptimizer;
 };
 

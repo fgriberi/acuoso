@@ -38,14 +38,6 @@
 #include <etilico/etilico.h>
 #include "acuoso/ICodonUsageModifier.h"
 
-/** @brief Temporal functions
-*
-*/
-int linkFictitious()
-{
-    return 1;
-}
-
 /** @brief Temporal method requerid to execute remo
 *
 * @param derivedKey: name of derived class
@@ -53,7 +45,7 @@ int linkFictitious()
 */
 acuoso::ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey)
 {
-    acuoso::ICodonUsageModifier* const ptr = mili::FactoryRegistry<acuoso::ICodonUsageModifier, std::string>::new_class(derivedKey);
+    acuoso::ICodonUsageModifier* const ptr = acuoso::CodonUsageModifier::new_class(derivedKey);
     mili::assert_throw<acuoso::InvalidDerived>(ptr != NULL);
     return ptr;
 }

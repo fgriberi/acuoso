@@ -31,9 +31,9 @@
  *
  */
 
-#include <string>
-#include <fstream>
-#include <iostream>
+//#include <string>
+//#include <fstream>
+//#include <iostream>
 #include <memory>
 #include <biopp/biopp.h>
 #include <acuoso/acuoso.h>
@@ -41,12 +41,13 @@
 
 using namespace acuoso;
 
-/// Temporal functions
-int linkFictitious();
+/** @brief Temporal method requerid to execute remo
+*
+*/
+acuoso::ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey);
 
 TEST(GeneDesignBackendTestSuite, BasicTest)
 {
-    linkFictitious();
     const std::string sequence = "UUUAAAACAGCCUGUGGGUUGUUCCCACCCACAGGCGCCACCGGGCGUUAGCACACUGGU"
                                  "AUCACGGUACCCUUGUGCGCCUGUUUUAUAACCCCACCCCGAGUAAACCUUAGAAGCAAU"
                                  "GCACCUCUGGUCAAUAGUAGGUGUGACACACCAGUCACAUCGUGACCAAGCACUUCUGUC"
@@ -66,7 +67,7 @@ TEST(GeneDesignBackendTestSuite, BasicTest)
     auxSeq.translate(aminoSeq);
     biopp::NucSequence seqDest;
 
-    ICodonUsageModifier* const humanizer = CodonUsageModifier::new_class("GeneDesign");
+    ICodonUsageModifier* const humanizer = getDerivedHumanizerBackend("GeneDesign");
     ASSERT_TRUE(humanizer != NULL);
 
     humanizer->setOrganism(acuoso::ICodonUsageModifier::Organism(3));

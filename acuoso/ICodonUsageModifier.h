@@ -46,13 +46,13 @@ struct ICodonUsageModifier;
 /** @brief Represent all backends availables
 *
 */
-typedef std::list<std::string> Backend;
+typedef std::list<std::string> Backends;
 
 /** @brief Represent a FactoryRegistry
 *
 */
 typedef mili::FactoryRegistry<ICodonUsageModifier, std::string> CodonUsageModifier;
-
+        
 /** @brief Interface for sequence's humanized services.
 *
 */
@@ -75,7 +75,7 @@ struct ICodonUsageModifier
         numberOfOrganisms
     };
 
-    /** @brief Humanized an messenger ARN sequence.
+    /** @brief Humanized an messenger RNA sequence.
      *
      * @param src: sequence the messenger RNA to humanized.
      * @param dest: sequence the messenger RNA as result.
@@ -95,13 +95,13 @@ struct ICodonUsageModifier
      */
     virtual ~ICodonUsageModifier() {}
 
-    /** @brief Get availables backend to optimizer
+    /** @brief Get available backends to optimizer
      *
      * Method that provide the available backends for optimizer service.
-     * @param slist: to fill with different backends
+     * @param backends: to fill with different backends
      * @return void
      */
-    static void getAvailableBackends(Backend& backends)
+    static void getAvailableBackends(Backends& backends)
     {
         Factory::KeyIterator it(CodonUsageModifier::getConstructibleObjectsKeys());
         while (!it.end())
