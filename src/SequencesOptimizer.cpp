@@ -1,11 +1,11 @@
 /**
- * @file     OptimizerOfSequences.cpp
- * @brief    OptimizerOfSequences is the implementation of OptimizerOfSequences interface.
+ * @file     SequencesOptimizer.cpp
+ * @brief    SequencesOptimizer is the implementation of SequencesOptimizer interface.
  *
  * @author   Franco Riberi
  * @email    fgriberi AT gmail.com
  *
- * Contents: Source file for acuoso providing the implementation of OptimizerOfSequences interface.
+ * Contents: Source file for acuoso providing the implementation of SequencesOptimizer interface.
  *
  * System:   acuoso: Abstract Codon Usage Optimization Software for Organisms
  * Language: C++
@@ -33,65 +33,43 @@
 
 #include <fstream>
 #include <etilico/etilico.h>
-#include "acuoso/OptimizerOfSequences.h"
+#include "acuoso/SequencesOptimizer.h"
 
 namespace acuoso
 {
 
-/** @brief Represent a filename
- *
- */
-typedef std::string FileName;
-
-/** @brief Represent a file
- *
- */
-typedef std::ofstream File;
-
-static const std::string FILE_OUTPUT = "project/acuoso/sequenceOptimized.fasta";
-
-OptimizerOfSequences::OptimizerOfSequences()
+SequencesOptimizer::SequencesOptimizer()
 {
     specificOptimizer = CodonUsageModifier::new_class("GeneDesign");
     specificOptimizer->setOrganism(ICodonUsageModifier::HSapiens); //human
 }
 
-OptimizerOfSequences::OptimizerOfSequences(ICodonUsageModifier* opt, ICodonUsageModifier::Organism org)
+SequencesOptimizer::SequencesOptimizer(ICodonUsageModifier* opt, ICodonUsageModifier::Organism org)
 {
     specificOptimizer = opt;
     specificOptimizer->setOrganism(org);
 }
 
-OptimizerOfSequences::~OptimizerOfSequences()
+SequencesOptimizer::~SequencesOptimizer()
 {
     delete specificOptimizer;
 }
 
-void OptimizerOfSequences::generateFile()
+void SequencesOptimizer::generateFile()
 {
-    File file;
-    if (file.is_open())
-    {
-        file.close();
-    }
-    std::string currentPath;
-    etilico::getCurrentPath(currentPath);
-    currentPath += FILE_OUTPUT;
-    file.open(currentPath.c_str());
-    if (!file)
-    {
-        throw FileNotFound();
-    }
+    const std::string path = "/tmp/";
+    std::string prefix = "acuoso-XXXXXX";    
+    etilico::createTemporaryFile(outputFileName, path, prefix);    
 }
 
-void OptimizerOfSequences::optimizer(const FileName& fileInput)
+void SequencesOptimizer::optimizer(const FileName& inputFile)
 {
-    generateFile();
-    bioppFiler::FastaParser<biopp::NucSequence> fileSequence(fileInput);
+    bioppFiler::FastaParser<biopp::NucSequence> fileSequence(inputFile);
     biopp::NucSequence sequenceToOptimizer;
     biopp::NucSequence sequenceOptimize;
     std::string description;
-    bioppFiler::FastaSaver<biopp::NucSequence> fs(FILE_OUTPUT.c_str());
+    generateFile();
+    bioppFiler::FastaSaver<biopp::NucSequence> fs(outputFileName.c_str());
     while (fileSequence.getNextSequence(description, sequenceToOptimizer))
     {
         biopp::AminoSequence aminoTempSequence;

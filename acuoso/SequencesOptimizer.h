@@ -1,6 +1,6 @@
 /**
- * @file    OptimizerOfSequences.h
- * @brief   OptimizerOfSequences provides the interface to optimize or humanize a fasta file.
+ * @file    SequencesOptimizer.h
+ * @brief   SequencesOptimizer provides the interface to optimize or humanize a fasta file.
  *
  * @author  Franco Riberi
  * @email   fgriberi AT gmail.com
@@ -42,32 +42,37 @@ namespace acuoso
 /** @brief Class that provides the interface to optimize a fasta file.
 *
 */
-class OptimizerOfSequences
+class SequencesOptimizer
 {
 public:
+
+    /** @brief Represent a filename
+     *
+     */
+    typedef std::string FileName;
 
     /** @brief Constructor of class
      *
      */
-    OptimizerOfSequences();
+    SequencesOptimizer();
 
     /** @brief Constructor of class with parameter
      *
      * @param opt: backend to optimize sequences
      */
-    OptimizerOfSequences(ICodonUsageModifier* codonUsage, ICodonUsageModifier::Organism org);
+    SequencesOptimizer(ICodonUsageModifier* codonUsage, ICodonUsageModifier::Organism org);
 
     /** @brief Destructor of class
      *
      */
-    ~OptimizerOfSequences();
+    ~SequencesOptimizer();
 
     /** @brief Optimizes all sequence of fasta file
     *
-    * @param fileInput: input file name
+    * @param inputFile: input file name
     * @return void
     */
-    void optimizer(const std::string& fileInput);
+    void optimizer(const std::string& inputFile);
 
 private:
 
@@ -77,8 +82,15 @@ private:
      */
     void generateFile();
 
-    /// Specific backend to optimize sequences
+    /** @brief Specific backend to optimize sequences
+     *
+     */
     ICodonUsageModifier* specificOptimizer;
+
+    /** @brief Represent output file with sequences humanized
+     * 
+     */
+    FileName outputFileName;    
 };
 
 } //namespace acuoso

@@ -45,10 +45,7 @@
 
 using namespace acuoso;
 
-/** @brief Temporal method requerid to execute remo
-*
-*/
-acuoso::ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey);
+ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey);
 
 TEST(GeneDesignBackendTestSuite, BasicTest)
 {
