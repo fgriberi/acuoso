@@ -40,8 +40,8 @@ namespace acuoso
 {
 
 /** @brief Class that provides the interface to optimize a fasta file.
-*
-*/
+ *
+ */
 class SequencesOptimizer
 {
 public:
@@ -68,10 +68,10 @@ public:
     ~SequencesOptimizer();
 
     /** @brief Optimizes all sequence of fasta file
-    *
-    * @param inputFile: input file name
-    * @return void
-    */
+     *
+     * @param inputFile: input file name
+     * @return void
+     */
     void optimizer(const std::string& inputFile);
 
 private:
@@ -85,12 +85,12 @@ private:
     /** @brief Specific backend to optimize sequences
      *
      */
-    ICodonUsageModifier* specificOptimizer;
+    ICodonUsageModifier* _specificOptimizer;
 
     /** @brief Represent output file with sequences humanized
      * 
      */
-    FileName outputFileName;    
+    FileName _outputFileName;    
 };
 
 } //namespace acuoso

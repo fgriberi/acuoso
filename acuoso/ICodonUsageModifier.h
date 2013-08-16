@@ -44,25 +44,25 @@ namespace acuoso
 struct ICodonUsageModifier;
 
 /** @brief Represent all backends availables
-*
-*/
+ *
+ */
 typedef std::list<std::string> Backends;
 
 /** @brief Represent a FactoryRegistry
-*
-*/
+ *
+ */
 typedef mili::FactoryRegistry<ICodonUsageModifier, std::string> CodonUsageModifier;
 
 /** @brief Interface for sequence's humanized services.
-*
-*/
+ *
+ */
 struct ICodonUsageModifier
 {
     typedef mili::Factory<std::string, ICodonUsageModifier> Factory;
 
     /** @brief Enum that representing all organisms supported
-    *
-    */
+     *
+     */
     enum Organism
     {
         minimumValue = 1,

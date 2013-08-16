@@ -67,7 +67,7 @@ GeneDesign::~GeneDesign()
 
 void GeneDesign::setOrganism(Organism organism)
 {
-    org = organism;
+    _org = organism;
 }
 
 void GeneDesign::generateCommand(const std::string& fileName, etilico::Command& cmd) const
@@ -77,7 +77,7 @@ void GeneDesign::generateCommand(const std::string& fileName, etilico::Command& 
     ss << fileName;
     ss << " -o ";
 
-    switch (org)
+    switch (_org)
     {
         case SCerevisiae:
             ss << 1;
@@ -155,7 +155,7 @@ void GeneDesign::changeCodonUsage(const biopp::AminoSequence& src, biopp::NucSeq
     checkErrorFile(FILE_ERROR.c_str());
 
     std::stringstream output;
-    output << fileName << FILE_EXTENSION << org << FASTA_EXTENSION;
+    output << fileName << FILE_EXTENSION << _org << FASTA_EXTENSION;
     std::string fileOutput;
     getFileOutput(output, fileOutput);
 

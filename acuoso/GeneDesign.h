@@ -44,8 +44,8 @@ namespace acuoso
 {
 
 /** @breif Provide the interface to GeneDesign backend.
-*
-*/
+ *
+ */
 class GeneDesign : public ICodonUsageModifier
 {
 private:
@@ -55,32 +55,32 @@ private:
     virtual ~GeneDesign();
 
     /** @brief Generates the command to call geneDesign
-    *
-    * @param fileName: input of geneDesing
-    * @param cmd: to fill with command generated
-    * @return void
-    */
+     *
+     * @param fileName: input of geneDesing
+     * @param cmd: to fill with command generated
+     * @return void
+     */
     void generateCommand(const std::string& fileName, etilico::Command& cmd) const;
 
     /** @brief Controls whether geneDesign generates an error file
-    *
-    * @param nameFile: input file name
-    * @return void
-    */
+     *
+     * @param nameFile: input file name
+     * @return void
+     */
     void checkErrorFile(const std::string& nameFile) const;
 
     /** @brief Gets the file name
-    *
-    * @param toParse: path to parse
-    * @param fileName: to fill with file name
-    * @return void
-    */
+     *
+     * @param toParse: path to parse
+     * @param fileName: to fill with file name
+     * @return void
+     */
     void getFileOutput(std::stringstream& toParse, std::string& fileName) const;
 
     /** @brief Store specific organism
-    *
-    */
-    Organism org;
+     *
+     */
+    Organism _org;
 };
 
 } //namespace acuoso

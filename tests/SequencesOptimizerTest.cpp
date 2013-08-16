@@ -50,7 +50,7 @@ ICodonUsageModifier* getDerivedHumanizerBackend(const std::string& derivedKey);
 TEST(SequencesOptimizerTest, DefualtConstructor)
 {
     SequencesOptimizer opt;
-    ASSERT_TRUE(opt.specificOptimizer != NULL);
+    ASSERT_TRUE(opt._specificOptimizer != NULL);
 }
 
 static const size_t HUMAN = 3;
@@ -59,7 +59,7 @@ TEST(SequencesOptimizerTest, ParameterizedConstructor)
 	ICodonUsageModifier* optimizer = getDerivedHumanizerBackend("GeneDesign");
     ASSERT_TRUE(optimizer != NULL);
     SequencesOptimizer opt(optimizer, ICodonUsageModifier::Organism(HUMAN));
-    ASSERT_TRUE(opt.specificOptimizer != NULL);    
+    ASSERT_TRUE(opt._specificOptimizer != NULL);    
 }
 
 static const size_t FIRST_SEQUENCE = 3;
@@ -73,9 +73,13 @@ TEST(SequencesOptimizerTest, OptimizerMethod)
     const std::string descriptionSequence2 = ">YAR029W"; 
     std::ofstream file(inputFile.c_str());
     file << descriptionSequence1 << " \n";   
-    file << "ATGTATGAGTACTTATTATTAACGAGGAAAAATGCCCTATTTTCTTTAGCAATTAATGAACCATCGCCAACTTTTGCTTTAACAATTATTGCCATTTTCAGCAGTACTAACGTAA\n";   
+    file << "ATGTATGAGTACTTATTATTAACGAGGAAAAATGCCCTATTTTCTTTAGCAATTAATGAACCATCG"
+            "CCAACTTTTGCTTTAACAATTATTGCCATTTTCAGCAGTACTAACGTAA\n";   
 	file << descriptionSequence2 <<" \n";   
-    file << "ATGAATAAATATCTATTTGACCATAAAATATGGAGTACTCCTTACTACTTTTATTGCGAAGAAGATTGCCACCGTCTTTTTCTAAGTTTTATTGAGGGAAGAACTTTCGAGAAGCCAACAAGCAACGCTGAGGAAAATGTACAGGAGACTGAAGCTGGCGAATCTTTCACATTAAATCCCGGAGAAGATTTTCAAAATTGCTTTCCAAGACAGCGGATATTGTAA \n";   
+    file << "ATGAATAAATATCTATTTGACCATAAAATATGGAGTACTCCTTACTACTTTTATTGCGAAGAAGAT"
+            "TGCCACCGTCTTTTTCTAAGTTTTATTGAGGGAAGAACTTTCGAGAAGCCAACAAGCAACGCTGAG"
+            "GAAAATGTACAGGAGACTGAAGCTGGCGAATCTTTCACATTAAATCCCGGAGAAGATTTTCAAAAT"
+            "TGCTTTCCAAGACAGCGGATATTGTAA \n";   
     file.close();
 
 	//------------------------------------ optimizer all sequence ------------------------------------------
@@ -84,7 +88,7 @@ TEST(SequencesOptimizerTest, OptimizerMethod)
 
    //------------------------------------ check output -----------------------------------------------------
 	    
-    std::ifstream outputFile(optimizerSequenceOfFile.outputFileName.c_str());
+    std::ifstream outputFile(optimizerSequenceOfFile._outputFileName.c_str());
     ASSERT_TRUE(outputFile);
 
     std::string aux;
@@ -117,5 +121,5 @@ TEST(SequencesOptimizerTest, OptimizerMethod)
     EXPECT_EQ(seq2Expected, seq2);
 
 	mili::assert_throw<UnlinkException>(unlink(inputFile.c_str()) == 0);
- 	mili::assert_throw<UnlinkException>(unlink(optimizerSequenceOfFile.outputFileName.c_str()) == 0);     
+ 	mili::assert_throw<UnlinkException>(unlink(optimizerSequenceOfFile._outputFileName.c_str()) == 0);     
 }

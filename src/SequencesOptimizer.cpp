@@ -40,26 +40,26 @@ namespace acuoso
 
 SequencesOptimizer::SequencesOptimizer()
 {
-    specificOptimizer = CodonUsageModifier::new_class("GeneDesign");
-    specificOptimizer->setOrganism(ICodonUsageModifier::HSapiens); //human
+    _specificOptimizer = CodonUsageModifier::new_class("GeneDesign");
+    _specificOptimizer->setOrganism(ICodonUsageModifier::HSapiens); //human
 }
 
 SequencesOptimizer::SequencesOptimizer(ICodonUsageModifier* opt, ICodonUsageModifier::Organism org)
 {
-    specificOptimizer = opt;
-    specificOptimizer->setOrganism(org);
+    _specificOptimizer = opt;
+    _specificOptimizer->setOrganism(org);
 }
 
 SequencesOptimizer::~SequencesOptimizer()
 {
-    delete specificOptimizer;
+    delete _specificOptimizer;
 }
 
 void SequencesOptimizer::generateFile()
 {
     const std::string path = "/tmp/";
     std::string prefix = "acuoso-XXXXXX";    
-    etilico::createTemporaryFile(outputFileName, path, prefix);    
+    etilico::createTemporaryFile(_outputFileName, path, prefix);    
 }
 
 void SequencesOptimizer::optimizer(const FileName& inputFile)
@@ -69,12 +69,12 @@ void SequencesOptimizer::optimizer(const FileName& inputFile)
     biopp::NucSequence sequenceOptimize;
     std::string description;
     generateFile();
-    bioppFiler::FastaSaver<biopp::NucSequence> fs(outputFileName.c_str());
+    bioppFiler::FastaSaver<biopp::NucSequence> fs(_outputFileName.c_str());
     while (fileSequence.getNextSequence(description, sequenceToOptimizer))
     {
         biopp::AminoSequence aminoTempSequence;
         sequenceToOptimizer.translate(aminoTempSequence);
-        specificOptimizer->changeCodonUsage(aminoTempSequence, sequenceOptimize);
+        _specificOptimizer->changeCodonUsage(aminoTempSequence, sequenceOptimize);
         fs.saveNextSequence(description, sequenceOptimize);
     }
 }
