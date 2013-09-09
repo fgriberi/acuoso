@@ -32,6 +32,7 @@
  *
  */
 
+#include <unistd.h>
 #define GENE_DESIGN_H
 #include "acuoso/GeneDesign.h"
 #undef GENE_DESIGN_H
