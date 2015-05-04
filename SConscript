@@ -1,5 +1,7 @@
 Import ('env')
 
+env.Append(CXXFLAGS=['--std=c++0x'])
+
 name = 'acuoso'
 inc = env.Dir('.')
 ext_inc = []
