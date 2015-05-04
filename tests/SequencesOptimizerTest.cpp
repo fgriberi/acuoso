@@ -40,7 +40,7 @@
 #define GENE_DESIGN_H
 #include "acuoso/GeneDesign.h"
 #undef GENE_DESIGN_H
-#include "acuoso/ICodonUsageModifier.h" 
+#include "acuoso/ICodonUsageModifier.h"
 #include "acuoso/SequencesOptimizer.h"
 
 using namespace acuoso;
@@ -56,10 +56,10 @@ TEST(SequencesOptimizerTest, DefualtConstructor)
 static const size_t HUMAN = 3;
 TEST(SequencesOptimizerTest, ParameterizedConstructor)
 {
-	ICodonUsageModifier* optimizer = getDerivedHumanizerBackend("GeneDesign");
+    ICodonUsageModifier* optimizer = getDerivedHumanizerBackend("GeneDesign");
     ASSERT_TRUE(optimizer != NULL);
     SequencesOptimizer opt(optimizer, ICodonUsageModifier::Organism(HUMAN));
-    ASSERT_TRUE(opt._specificOptimizer != NULL);    
+    ASSERT_TRUE(opt._specificOptimizer != NULL);
 }
 
 static const size_t FIRST_SEQUENCE = 3;
@@ -69,25 +69,25 @@ TEST(SequencesOptimizerTest, OptimizerMethod)
 {
     //------------------------------- create file with 2 sequence in format fasta --------------------------
     const std::string inputFile = "/tmp/acuoso-fileTest.fasta";
-    const std::string descriptionSequence1 = ">YAR053W";                                             
-    const std::string descriptionSequence2 = ">YAR029W"; 
+    const std::string descriptionSequence1 = ">YAR053W";
+    const std::string descriptionSequence2 = ">YAR029W";
     std::ofstream file(inputFile.c_str());
-    file << descriptionSequence1 << " \n";   
+    file << descriptionSequence1 << " \n";
     file << "ATGTATGAGTACTTATTATTAACGAGGAAAAATGCCCTATTTTCTTTAGCAATTAATGAACCATCG"
-            "CCAACTTTTGCTTTAACAATTATTGCCATTTTCAGCAGTACTAACGTAA\n";   
-	file << descriptionSequence2 <<" \n";   
+         "CCAACTTTTGCTTTAACAATTATTGCCATTTTCAGCAGTACTAACGTAA\n";
+    file << descriptionSequence2 << " \n";
     file << "ATGAATAAATATCTATTTGACCATAAAATATGGAGTACTCCTTACTACTTTTATTGCGAAGAAGAT"
-            "TGCCACCGTCTTTTTCTAAGTTTTATTGAGGGAAGAACTTTCGAGAAGCCAACAAGCAACGCTGAG"
-            "GAAAATGTACAGGAGACTGAAGCTGGCGAATCTTTCACATTAAATCCCGGAGAAGATTTTCAAAAT"
-            "TGCTTTCCAAGACAGCGGATATTGTAA \n";   
+         "TGCCACCGTCTTTTTCTAAGTTTTATTGAGGGAAGAACTTTCGAGAAGCCAACAAGCAACGCTGAG"
+         "GAAAATGTACAGGAGACTGAAGCTGGCGAATCTTTCACATTAAATCCCGGAGAAGATTTTCAAAAT"
+         "TGCTTTCCAAGACAGCGGATATTGTAA \n";
     file.close();
 
-	//------------------------------------ optimizer all sequence ------------------------------------------
-    SequencesOptimizer optimizerSequenceOfFile; //using geneDesign to default   
+    //------------------------------------ optimizer all sequence ------------------------------------------
+    SequencesOptimizer optimizerSequenceOfFile; //using geneDesign to default
     optimizerSequenceOfFile.optimizer(inputFile.c_str());
 
-   //------------------------------------ check output -----------------------------------------------------
-	    
+    //------------------------------------ check output -----------------------------------------------------
+
     std::ifstream outputFile(optimizerSequenceOfFile._outputFileName.c_str());
     ASSERT_TRUE(outputFile);
 
@@ -95,31 +95,31 @@ TEST(SequencesOptimizerTest, OptimizerMethod)
     std::string description1;
     std::string seq1;
     getline(outputFile, description1);
-    for(int i = 0; i < FIRST_SEQUENCE; ++i)
+    for (int i = 0; i < FIRST_SEQUENCE; ++i)
     {
-    	getline(outputFile, seq1);
-    	aux += seq1;
+        getline(outputFile, seq1);
+        aux += seq1;
     }
     seq1 = aux;
     aux.clear();
-	std::string description2;
+    std::string description2;
     std::string seq2;
     getline(outputFile, description2);
-    for(int i = 0; i < SECOND_SEQUENCE; ++i)
+    for (int i = 0; i < SECOND_SEQUENCE; ++i)
     {
-    	getline(outputFile, seq2);
-    	aux += seq2;
+        getline(outputFile, seq2);
+        aux += seq2;
     }
-    seq2 = aux;    
-    const std::string seq1Expected = "AUGUACGAGUACCUGCUGCUGACCCGCAAGAACGCCCUGUUCAGCCUGGCCAUCAACGAGCCCAGCCCCACCUUCGCCCUGACCAUCAUCGCCAUCUUCAGCAGCACCAACGUG"; 
+    seq2 = aux;
+    const std::string seq1Expected = "AUGUACGAGUACCUGCUGCUGACCCGCAAGAACGCCCUGUUCAGCCUGGCCAUCAACGAGCCCAGCCCCACCUUCGCCCUGACCAUCAUCGCCAUCUUCAGCAGCACCAACGUG";
     const std::string seq2Expected = "AUGAACAAGUACCUGUUCGACCACAAGAUCUGGAGCACCCCCUACUACUUCUACUGCGAGGAGGACUGCCACCGCCUGUUCCUGAGCUUCAUCGAGGGCC"
-									 "GCACCUUCGAGAAGCCCACCAGCAACGCCGAGGAGAACGUGCAGGAGACCGAGGCCGGCGAGAGCUUCACCCUGAACCCCGGCGAGGACUUCCAGAACUG"
-								  	 "CUUCCCCCGCCAGCGCAUCCUGUGA";
+                                     "GCACCUUCGAGAAGCCCACCAGCAACGCCGAGGAGAACGUGCAGGAGACCGAGGCCGGCGAGAGCUUCACCCUGAACCCCGGCGAGGACUUCCAGAACUG"
+                                     "CUUCCCCCGCCAGCGCAUCCUGUGA";
     EXPECT_EQ(description1, descriptionSequence1);
-	EXPECT_EQ(seq1Expected, seq1);
+    EXPECT_EQ(seq1Expected, seq1);
     EXPECT_EQ(description2, descriptionSequence2);
     EXPECT_EQ(seq2Expected, seq2);
 
-	mili::assert_throw<UnlinkException>(unlink(inputFile.c_str()) == 0);
- 	mili::assert_throw<UnlinkException>(unlink(optimizerSequenceOfFile._outputFileName.c_str()) == 0);     
+    mili::assert_throw<UnlinkException>(unlink(inputFile.c_str()) == 0);
+    mili::assert_throw<UnlinkException>(unlink(optimizerSequenceOfFile._outputFileName.c_str()) == 0);
 }

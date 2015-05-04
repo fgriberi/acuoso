@@ -58,8 +58,8 @@ SequencesOptimizer::~SequencesOptimizer()
 void SequencesOptimizer::generateFile()
 {
     const std::string path = "/tmp/";
-    std::string prefix = "acuoso-XXXXXX";    
-    etilico::createTemporaryFile(_outputFileName, path, prefix);    
+    std::string prefix = "acuoso-XXXXXX";
+    etilico::createTemporaryFile(_outputFileName, path, prefix);
 }
 
 void SequencesOptimizer::optimizer(const FileName& inputFile)

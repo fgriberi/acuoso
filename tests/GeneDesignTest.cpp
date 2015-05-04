@@ -104,32 +104,32 @@ TEST(GeneDesignBackendTestSuite, InvalidOrganism)
     geneDesign.setOrganism(ICodonUsageModifier::Organism(8)); //invalid organism
     const std::string fileName = "obsoletFileName.fasta";
     etilico::Command cmd;
-    EXPECT_THROW(geneDesign.generateCommand(fileName, cmd), OrganismNotSupported);    
+    EXPECT_THROW(geneDesign.generateCommand(fileName, cmd), OrganismNotSupported);
 }
 
 TEST(GeneDesignBackendTestSuite, invalidPath)
-{    
+{
     std::stringstream pathFile;
-    pathFile << "tmp/acuoso-Jrkkxc_gdRT_3.FASTA";    
+    pathFile << "tmp/acuoso-Jrkkxc_gdRT_3.FASTA";
     std::string fileName;
     GeneDesign geneDesign;
-    EXPECT_THROW(geneDesign.getFileOutput(pathFile, fileName), IndexOutOfRange);       
+    EXPECT_THROW(geneDesign.getFileOutput(pathFile, fileName), IndexOutOfRange);
 }
 
 TEST(GeneDesignBackendTestSuite, CorrectCommand)
-{    
+{
     GeneDesign geneDesign;
-    geneDesign.setOrganism(ICodonUsageModifier::Organism(3)); 
+    geneDesign.setOrganism(ICodonUsageModifier::Organism(3));
     const std::string fileName = "/tmp/acuoso-uvkcIs";
     etilico::Command cmd;
     geneDesign.generateCommand(fileName, cmd);
-    const etilico::Command expectdCmd = "perl Reverse_Translate.pl -i /tmp/acuoso-uvkcIs -o 3";    
+    const etilico::Command expectdCmd = "perl Reverse_Translate.pl -i /tmp/acuoso-uvkcIs -o 3";
     EXPECT_EQ(cmd, expectdCmd);
 }
 
 static const size_t INVALID_COMMAND = 2;
 TEST(GeneDesignBackendTestSuite, IncorrectCommand)
-{    
-    etilico::Command cmd = "perl Reverse_Translate.pl -i tmp/acuoso-uvkcIs -o3";              
+{
+    etilico::Command cmd = "perl Reverse_Translate.pl -i tmp/acuoso-uvkcIs -o3";
     EXPECT_EQ(etilico::runCommand(cmd), INVALID_COMMAND);
 }
